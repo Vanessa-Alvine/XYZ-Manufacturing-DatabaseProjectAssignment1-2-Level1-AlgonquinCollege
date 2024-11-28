@@ -1,0 +1,19 @@
+-- Views
+-- Vanessa Alvine MOTUE
+-- Miki
+-- Genesis Su
+
+-- A dynamic view for query 4 in the previous task
+
+CREATE VIEW OttawaCustomers4000_View AS
+SELECT Customer_Id, Customer_Name, Credit_limit 
+FROM Customers
+WHERE Credit_limit > 4000 AND Town = 'Ottawa';
+
+--A dynamic view for query 9 in the previous task
+
+CREATE VIEW TownAndCustomers_View AS
+SELECT Town, COUNT(*) AS Total_Customers 
+FROM Customers
+GROUP BY Town
+HAVING COUNT(*) = 1;

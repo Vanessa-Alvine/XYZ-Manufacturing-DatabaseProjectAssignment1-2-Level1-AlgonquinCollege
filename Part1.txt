@@ -1,0 +1,122 @@
+--DDL command file
+-- Vanessa Alvine MOTUE
+-- Miki
+-- Genesis Su
+
+CREATE TABLE Customers
+(
+  Customer_Id INT NOT NULL,
+  Customer_Name VARCHAR(255) NOT NULL,
+  Credit_limit DECIMAL(10, 2) NOT NULL,
+  Street_number INT NOT NULL,
+  Street_name VARCHAR(255) NOT NULL,
+  Town VARCHAR(255) NOT NULL,
+  Province VARCHAR(255) NOT NULL,
+  Unit_number INT,
+  Postal_code VARCHAR(10) NOT NULL,
+  PRIMARY KEY (Customer_Id)
+);
+
+CREATE TABLE Orders
+(
+  Order_id INT NOT NULL,
+  Order_date DATE NOT NULL,
+  Customer_id INT NOT NULL,
+  PRIMARY KEY (Order_id),
+  FOREIGN KEY (Customer_id) REFERENCES Customers(Customer_Id)
+);
+
+CREATE TABLE Customers_records
+(
+  Discount DECIMAL(5, 2),
+  Customer_id INT NOT NULL,
+  Order_count INT NOT NULL,
+  Record_id INT NOT NULL,
+  Order_id INT NOT NULL,
+  PRIMARY KEY (Record_id),
+  FOREIGN KEY (Customer_id) REFERENCES Customers(Customer_Id),
+  FOREIGN KEY (Order_id) REFERENCES Orders(Order_id)
+);
+
+CREATE TABLE Inventory
+(
+  inv_id SERIAL PRIMARY KEY,
+  Product_code INT NOT NULL,
+  Part_number INT NOT NULL,
+  Inventory_date DATE NOT NULL
+);
+
+
+
+CREATE TABLE Customers_Customer_phone_number
+(
+  Customer_phone_number VARCHAR(15) NOT NULL,
+  Customer_Id INT NOT NULL,
+  PRIMARY KEY (Customer_phone_number, Customer_Id),
+  FOREIGN KEY (Customer_Id) REFERENCES Customers(Customer_Id)
+);
+
+
+
+CREATE TABLE Products
+(
+  Product_code INT NOT NULL,
+  Description VARCHAR(255) NOT NULL,
+  Product_price DECIMAL(10, 2) NOT NULL,
+  inv_id INT NOT NULL,
+  PRIMARY KEY (Product_code),
+  FOREIGN KEY (inv_id) REFERENCES Inventory(inv_id)
+);
+
+--DROP TABLE Inventory;
+
+
+CREATE TABLE Parts
+(
+  Part_number INT NOT NULL,
+  Part_description VARCHAR(255) NOT NULL,
+  inv_id INT NOT NULL,
+  PRIMARY KEY (Part_number),
+  FOREIGN KEY (inv_id) REFERENCES Inventory(inv_id)
+);
+
+
+CREATE TABLE Line_Item
+(
+  Quantity INT NOT NULL,
+  Product_code INT NOT NULL,
+  Filled BOOLEAN NOT NULL,
+  Item_number INT NOT NULL,
+  Order_id INT NOT NULL,
+  PRIMARY KEY (Item_number, Order_id, Product_code),
+  FOREIGN KEY (Order_id) REFERENCES Orders(Order_id),
+  FOREIGN KEY (Product_code) REFERENCES Products(Product_code)
+);
+
+CREATE TABLE Shipping
+(
+  Shipping_id INT NOT NULL,
+  Customer_id INT NOT NULL,
+  Order_id INT NOT NULL,
+  Status VARCHAR(50) NOT NULL,
+  Mailing_Street_number INT NOT NULL,
+  Mailing_Street_name VARCHAR(255) NOT NULL,
+  Mailing_Town VARCHAR(255) NOT NULL,
+  Mailing_Province VARCHAR(255) NOT NULL,
+  Mailing_Unit_number INT,
+  Mailing_Postal_code VARCHAR(10) NOT NULL,
+  PRIMARY KEY (Shipping_id, Order_id, Customer_id),
+  FOREIGN KEY (Order_id) REFERENCES Orders(Order_id),
+  FOREIGN KEY (Customer_id) REFERENCES Customers(Customer_Id)
+);
+
+CREATE TABLE Line_Item 
+(
+Quantity INT NOT NULL,
+Product_code INT NOT NULL,
+Filled BOOLEAN NOT NULL,
+Item_number INT NOT NULL,
+Order_id INT NOT NULL,
+PRIMARY KEY (Item_number, Order_id, Product_code), 
+FOREIGN KEY (Order_id) REFERENCES Orders(Order_id),
+FOREIGN KEY (Product_code) REFERENCES Products(Product_code) );

@@ -1,0 +1,54 @@
+-- Queries
+-- Vanessa Alvine MOTUE
+-- Miki
+-- Genesis Su
+
+
+--A simple query that pulls all columns and rows from a table
+SELECT * FROM Customers;
+
+-- A query that displays a subset of columns
+SELECT Customer_Id, Customer_Name, Credit_limit FROM Customers;
+
+--A query that displays a subset of columns with a single clause (predicate) WHERE statement
+SELECT Customer_Id, Customer_Name, Credit_limit FROM Customers
+WHERE Credit_limit > 5000;
+
+-- A query that displays a subset of columns with a multi-clause (predicate) WHERE statement using AND/OR
+SELECT Customer_Id, Customer_Name, Credit_limit FROM Customers
+WHERE Credit_limit > 4000 AND Town = 'Ottawa';
+
+-- A query that performs a single table join.  In other words, you are joining 2 tables.
+SELECT Customers.Customer_Id, Customers.Customer_Name, Orders.Order_id, Orders.Order_date
+FROM Customers
+JOIN Orders ON Customers.Customer_Id = Orders.Customer_id;
+
+-- A query that performs a multi-table join. In other words, you are joining 3 or more tables.
+SELECT Customers.Customer_Id, Customers.Customer_Name, Orders.Order_id, Orders.Order_date, Products.Description
+FROM Customers
+JOIN Orders ON Customers.Customer_Id = Orders.Customer_id
+JOIN Line_Item ON Orders.Order_id = Line_Item.Order_id
+JOIN Products ON Line_Item.Product_code = Products.Product_code;
+
+-- A query that performs an aggregate (count, min, max, sum, avg, etc.).
+SELECT COUNT(*) AS Total_Customers FROM Customers;
+
+-- A query that performs an aggregate (count, min, max, sum, avg, etc.) with a GROUP BY.
+SELECT Town, COUNT(*) AS Total_Customers FROM Customers
+GROUP BY Town;
+
+-- A query that performs an aggregate (count, min, max, sum, avg, etc.). with a GROUP BY and a HAVING clause
+SELECT Town, COUNT(*) AS Total_Customers FROM Customers
+GROUP BY Town
+HAVING COUNT(*) = 1;
+
+-- A query that performs a subquery either as part of the WHERE clause or as a derived/virtual table.
+SELECT Customer_Id, Customer_Name FROM Customers
+WHERE Customer_Id IN (SELECT Customer_id FROM Orders WHERE Order_date > '2024-01-01');
+
+-- A query that performs an aggregate with a join and a group by.
+SELECT Customers.Town, COUNT(Orders.Order_id) AS Total_Orders FROM Customers
+JOIN Orders ON Customers.Customer_Id = Orders.Customer_id
+GROUP BY Customers.Town;
+
+
